@@ -5,14 +5,27 @@ class Pokedex extends React.Component {
     constructor() {
         super();
 
+        this.handlePokemonIndex = this.handlePokemonIndex.bind(this);
+
         this.state = {
             pokemonIndex: 0
         };
         
     }
 
-    nextPokemon() {
+    handlePokemonIndex() {
+        const { pokemons } = this.props;
+        const { pokemonIndex } = this.state;
 
+        if (pokemonIndex >= pokemons.length - 1) {
+            this.setState({
+                pokemonIndex: 0
+            })
+        } else {
+            this.setState((previousState, _props) => ({
+                pokemonIndex: previousState.pokemonIndex + 1
+            }))
+        }
     }
 
     render() {
@@ -22,7 +35,7 @@ class Pokedex extends React.Component {
             <div className="pokedex">
                  <Pokemon key={pokemon.id} pokemon={pokemon} />
                  <div className="buttons-container">
-                     <button>Next pokémon</button>
+                     <button onClick={this.handlePokemonIndex}>Next pokémon</button>
                  </div>
             </div>
         );
