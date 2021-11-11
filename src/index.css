@@ -24,8 +24,6 @@ body {
   margin: 5px;
 }
 
-/* .pokedex {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 10px 10px;
-} */
+.active {
+  border: 2px solid gray;
+}

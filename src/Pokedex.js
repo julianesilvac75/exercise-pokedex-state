@@ -1,5 +1,6 @@
 import React from 'react';
 import Pokemon from './Pokemon';
+import pokemons from './data';
 
 class Pokedex extends React.Component {
     constructor() {
@@ -7,11 +8,12 @@ class Pokedex extends React.Component {
 
         
         this.handlePokemonIndex = this.handlePokemonIndex.bind(this);
-        this.handleFilter = this.handleFilter.bind(this);
+        this.handleFilterButton = this.handleFilterButton.bind(this);
+        this.handleFilteredList = this.handleFilteredList.bind(this);
         
         
         this.state = {
-            pokemonsArray: [],
+            pokemonsArray: pokemons,
             pokemonIndex: 0,
             Fire: false,
             Psychic: false,
@@ -21,47 +23,55 @@ class Pokedex extends React.Component {
 
     handlePokemonIndex() {
         const { pokemons } = this.props;
-        const { pokemonIndex } = this.state;
-
-        if (pokemonIndex >= pokemons.length - 1) {
-            this.setState({
-                pokemonIndex: 0
-            })
-        } else {
-            this.setState((previousState, _props) => ({
-                pokemonIndex: previousState.pokemonIndex + 1
-            }))
-        }
+        
+        this.setState((previousState, _props) => ({
+            pokemonIndex: previousState.pokemonIndex < pokemons.length - 1 ? previousState.pokemonIndex + 1 : 0,
+        }))
+        
     }
 
-    handleFilter(event) {
-        const { name: pokemonType } = event.target;
-        const filteredPokemonsIndex = [];
-
-        this.props.pokemons.forEach((pokemon) => {
-            if(pokemon.type === pokemonType) {
-                filteredPokemonsIndex.push(pokemon);
-            }
-        })
+    handleFilteredList() {
         
-        if (this.state[pokemonType] === false) {
-            this.setState({
-                [pokemonType]: true,
-                pokemonsArray: filteredPokemonsIndex
-            });
-            event.target.style.border = '2px solid gray';
-        } else {
-            this.setState({
-                [pokemonType]: false,
-                pokemonsArray: this.props.pokemons
-            })
-            event.target.style.border = '1px solid gray';
-        }
+    }
+
+    handleFilterButton({ target }) {
+        const { name: pokemonType } = target;
+
+
+        this.state[pokemonType] ? this.setState({
+            [pokemonType]: false,
+        }) : this.setState({
+            Fire: false,
+            Psychic: false,
+        }, () => this.setState({
+            [pokemonType]: true,
+        }))
+
+        // // this.props.pokemons.forEach((pokemon) => {
+        // //     if(pokemon.type === pokemonType) {
+        // //         filteredPokemonsIndex.push(pokemon);
+        // //     }
+        // // })
+        
+        // if (this.state[pokemonType] === false) {
+        //     this.setState({
+        //         [pokemonType]: true,
+        //         // pokemonsArray: filteredPokemonsIndex
+        //     });
+        //     event.target.style.border = ;
+        // } else {
+        //     this.setState({
+        //         [pokemonType]: false,
+        //         // pokemonsArray: this.props.pokemons
+        //     })
+        //     event.target.style.border = ;
+        // }
     }
 
     render() {
-        const pokemon = this.props.pokemons[this.state.pokemonIndex];
-
+        const { pokemonsArray, pokemonIndex, Fire, Psychic } = this.state;
+        const pokemon = pokemonsArray[pokemonIndex];
+    
         return (
             <div className="pokedex">
                 <Pokemon key={pokemon.id} pokemon={pokemon} />
@@ -73,14 +83,16 @@ class Pokedex extends React.Component {
                         Next pokémon
                     </button>
                     <button
-                      className="button"
-                      onClick={this.handleFilter} name="Fire"
+                      className={`button ${ Fire ? 'active' : ''}`}
+                      name="Fire"
+                      onClick={ this.handleFilterButton }
                     >
                         Fire
                     </button>
                     <button
-                      className="button"
-                      onClick={this.handleFilter} name="Psychic"
+                      className={`button ${ Psychic ? 'active' : ''}`}
+                      name="Psychic"
+                      onClick={ this.handleFilterButton }
                     >
                         Psychic
                     </button>
