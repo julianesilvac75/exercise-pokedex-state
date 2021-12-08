@@ -2,6 +2,14 @@ import React from 'react';
 import Pokemon from './Pokemon';
 import pokemons from './data';
 
+const TYPES = pokemons.reduce((prev, curr) => {
+    !prev.includes(curr.type) && prev.push(curr.type);
+
+    return prev;
+}, []);
+
+console.log(TYPES);
+
 class Pokedex extends React.Component {
     constructor() {
         super();
@@ -9,14 +17,15 @@ class Pokedex extends React.Component {
         
         this.handlePokemonIndex = this.handlePokemonIndex.bind(this);
         this.handleFilterButton = this.handleFilterButton.bind(this);
-        this.handleAllButton = this.handleAllButton.bind(this);
+        // this.handleAllButton = this.handleAllButton.bind(this);
 
         this.state = {
             pokemonsArray: pokemons,
             pokemonIndex: 0,
-            Fire: false,
-            Psychic: false,
-            All: true,
+            activeFilter: 'All',
+            // Fire: false,
+            // Psychic: false,
+            // All: true,
         };
         
     }
@@ -34,34 +43,40 @@ class Pokedex extends React.Component {
         const { name: pokemonType } = target;
         const filtered = pokemons.filter((pokemon) => pokemon.type === pokemonType);
 
-        this.state[pokemonType] ? this.setState({
-            [pokemonType]: false,
-            pokemonsArray: pokemons,
-            pokemonIndex: 0,
-            All: true,
-        }) : this.setState({
-            Fire: false,
-            Psychic: false,
-            All: false,
-        }, () => this.setState({
-            [pokemonType]: true,
-            pokemonsArray: filtered,
-            pokemonIndex: 0,
-        }))
+        this.setState({
+            activeFilter: pokemonType,
+            pokemonsArray: pokemonType === 'All' ? pokemons : filtered,
+            pokemonIndex: 0
+        })
+
+        // this.state[pokemonType] ? this.setState({
+        //     [pokemonType]: false,
+        //     pokemonsArray: pokemons,
+        //     pokemonIndex: 0,
+        //     All: true,
+        // }) : this.setState({
+        //     Fire: false,
+        //     Psychic: false,
+        //     All: false,
+        // }, () => this.setState({
+        //     [pokemonType]: true,
+        //     pokemonsArray: filtered,
+        //     pokemonIndex: 0,
+        // }))
     }
 
-    handleAllButton() {
-        this.setState({
-            All: true,
-            Fire: false,
-            Psychic: false,
-            pokemonsArray: pokemons,
-            pokemonIndex: 0,
-        });
-    }
+    // handleAllButton() {
+    //     this.setState({
+    //         All: true,
+    //         Fire: false,
+    //         Psychic: false,
+    //         pokemonsArray: pokemons,
+    //         pokemonIndex: 0,
+    //     });
+    // }
 
     render() {
-        const { pokemonsArray, pokemonIndex, Fire, Psychic, All } = this.state;
+        const { pokemonsArray, pokemonIndex, Fire, Psychic, All, activeFilter } = this.state;
         const pokemon = pokemonsArray[pokemonIndex];
     
         return (
@@ -76,26 +91,36 @@ class Pokedex extends React.Component {
                         Next pokémon
                     </button>
                     <button
-                      className={`button ${ All ? 'active' : ''}`}
+                      className={`button ${ activeFilter === 'All' && 'active'}`}
                       name="All"
-                      onClick={ this.handleAllButton }
+                      onClick={ this.handleFilterButton }
                     >
                         All
                     </button>
-                    <button
-                      className={`button ${ Fire ? 'active' : ''}`}
+                    {TYPES.map((type) => (
+                        <button
+                        className={`button ${ activeFilter === type && 'active'}`}
+                        name={type}
+                        onClick={ this.handleFilterButton }
+                        key={type}
+                      >
+                          {type}
+                      </button>
+                    ))}
+                    {/* <button
+                      className={`button ${ activeFilter === 'Fire' && 'active'}`}
                       name="Fire"
                       onClick={ this.handleFilterButton }
                     >
                         Fire
                     </button>
                     <button
-                      className={`button ${ Psychic ? 'active' : ''}`}
+                      className={`button ${ activeFilter === 'Psychic' && 'active'}`}
                       name="Psychic"
                       onClick={ this.handleFilterButton }
                     >
                         Psychic
-                    </button>
+                    </button> */}
                  </div>
             </div>
         );
