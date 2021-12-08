@@ -71,6 +71,7 @@ class Pokedex extends React.Component {
                     <button
                       className="button"
                       onClick={this.handlePokemonIndex}
+                      disabled={ pokemonsArray.length === 1 }
                     >
                         Next pokémon
                     </button>
