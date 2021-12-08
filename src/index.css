@@ -27,3 +27,17 @@ body {
 .active {
   border: 2px solid gray;
 }
+
+.next {
+  background-color: blueviolet;
+  border: 2px solid black;
+}
+
+.buttons-list {
+  display: flex;
+  justify-content: center;
+}
+
+.buttons-list li {
+  list-style: none;
+}
