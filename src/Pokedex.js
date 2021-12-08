@@ -9,9 +9,7 @@ class Pokedex extends React.Component {
         
         this.handlePokemonIndex = this.handlePokemonIndex.bind(this);
         this.handleFilterButton = this.handleFilterButton.bind(this);
-        this.handleFilteredList = this.handleFilteredList.bind(this);
-        
-        
+
         this.state = {
             pokemonsArray: pokemons,
             pokemonIndex: 0,
@@ -22,50 +20,30 @@ class Pokedex extends React.Component {
     }
 
     handlePokemonIndex() {
-        const { pokemons } = this.props;
+        const { pokemonsArray } = this.state;
         
         this.setState((previousState, _props) => ({
-            pokemonIndex: previousState.pokemonIndex < pokemons.length - 1 ? previousState.pokemonIndex + 1 : 0,
+            pokemonIndex: previousState.pokemonIndex < pokemonsArray.length - 1 ? previousState.pokemonIndex + 1 : 0,
         }))
-        
-    }
-
-    handleFilteredList() {
         
     }
 
     handleFilterButton({ target }) {
         const { name: pokemonType } = target;
-
+        const filtered = pokemons.filter((pokemon) => pokemon.type === pokemonType);
 
         this.state[pokemonType] ? this.setState({
             [pokemonType]: false,
+            pokemonsArray: pokemons,
+            pokemonIndex: 0,
         }) : this.setState({
             Fire: false,
             Psychic: false,
         }, () => this.setState({
             [pokemonType]: true,
+            pokemonsArray: filtered,
+            pokemonIndex: 0,
         }))
-
-        // // this.props.pokemons.forEach((pokemon) => {
-        // //     if(pokemon.type === pokemonType) {
-        // //         filteredPokemonsIndex.push(pokemon);
-        // //     }
-        // // })
-        
-        // if (this.state[pokemonType] === false) {
-        //     this.setState({
-        //         [pokemonType]: true,
-        //         // pokemonsArray: filteredPokemonsIndex
-        //     });
-        //     event.target.style.border = ;
-        // } else {
-        //     this.setState({
-        //         [pokemonType]: false,
-        //         // pokemonsArray: this.props.pokemons
-        //     })
-        //     event.target.style.border = ;
-        // }
     }
 
     render() {
