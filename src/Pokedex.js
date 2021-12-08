@@ -9,12 +9,14 @@ class Pokedex extends React.Component {
         
         this.handlePokemonIndex = this.handlePokemonIndex.bind(this);
         this.handleFilterButton = this.handleFilterButton.bind(this);
+        this.handleAllButton = this.handleAllButton.bind(this);
 
         this.state = {
             pokemonsArray: pokemons,
             pokemonIndex: 0,
             Fire: false,
             Psychic: false,
+            All: true,
         };
         
     }
@@ -36,9 +38,11 @@ class Pokedex extends React.Component {
             [pokemonType]: false,
             pokemonsArray: pokemons,
             pokemonIndex: 0,
+            All: true,
         }) : this.setState({
             Fire: false,
             Psychic: false,
+            All: false,
         }, () => this.setState({
             [pokemonType]: true,
             pokemonsArray: filtered,
@@ -46,8 +50,18 @@ class Pokedex extends React.Component {
         }))
     }
 
+    handleAllButton() {
+        this.setState({
+            All: true,
+            Fire: false,
+            Psychic: false,
+            pokemonsArray: pokemons,
+            pokemonIndex: 0,
+        });
+    }
+
     render() {
-        const { pokemonsArray, pokemonIndex, Fire, Psychic } = this.state;
+        const { pokemonsArray, pokemonIndex, Fire, Psychic, All } = this.state;
         const pokemon = pokemonsArray[pokemonIndex];
     
         return (
@@ -59,6 +73,13 @@ class Pokedex extends React.Component {
                       onClick={this.handlePokemonIndex}
                     >
                         Next pokémon
+                    </button>
+                    <button
+                      className={`button ${ All ? 'active' : ''}`}
+                      name="All"
+                      onClick={ this.handleAllButton }
+                    >
+                        All
                     </button>
                     <button
                       className={`button ${ Fire ? 'active' : ''}`}
