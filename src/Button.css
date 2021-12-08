@@ -1,0 +1,14 @@
+.button {
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.active {
+    border: 2px solid gray;
+}
+  
+.next {
+    background-color: blueviolet;
+    border: 2px solid black;
+}
