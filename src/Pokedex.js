@@ -2,6 +2,7 @@ import React from 'react';
 import Pokemon from './Pokemon';
 import pokemons from './data';
 import Button from './Button';
+import './Pokedex.css';
 
 const TYPES = pokemons.reduce((prev, curr) => {
     !prev.includes(curr.type) && prev.push(curr.type);
